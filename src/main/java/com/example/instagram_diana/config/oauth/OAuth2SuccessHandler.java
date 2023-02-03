@@ -21,37 +21,29 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     @Autowired
     private final JwtService jwtService;
-    //private final UserRequestMapper userRequestMapper;
-    //private final ObjectMapper objectMapper;
 
     // userService에서 던진 principal 정보 받아온다.
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
-            throws IOException, ServletException {
+            throws IOException {
 
-        System.out.println(authentication.getPrincipal());
+
 
         PrincipalDetails principalDetailis = (PrincipalDetails) authentication.getPrincipal();
+        System.out.println("authentiacation Principal Info: "+principalDetailis);
 
-
-        System.out.println("hi user!!!!!"+principalDetailis.getUser().getId());
-        System.out.println("hi user2222!!!!!"+principalDetailis.getUser().getEmail());
+        System.out.println("onAuthenticationSuccess handeler is executed by jjungie."+principalDetailis.getUser().getId());
 
 
         Long userIdx = principalDetailis.getUser().getId();
         //jwt 발급.
         String jwt = jwtService.createJwt(userIdx);
-        //      return new PostUserRes(jwt,userIdx);
 
-
-
-        //UserDto userDto = userRequestMapper.toDto(oAuth2User);
-
-        System.out.println("안녕 나는 헤더야!"+jwt);
+        System.out.println("OAuth2SuccessHandler class Execution:"+jwt);
 
        // response.addHeader(JwtProperties.HEADER_STRING, jwt);
 
-        //------------
+        //------------ redirect url with jwt token
         String username = principalDetailis.getUser().getUsername();
 
         //패스워드 입력하도록 리다이렉트

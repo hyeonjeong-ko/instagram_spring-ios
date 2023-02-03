@@ -59,7 +59,7 @@ spring:
               - email
               - profile
           facebook:
-            client-id: 511562584368297 #2058319234361361 server13 production용 ID
+            client-id: 2058319234361361 #2058319234361361 server13 production용 ID 511562584368297
             client-secret: 9eed5bfa7ac4425a0c141c4bf7f66273
             scope:
               - public_profile

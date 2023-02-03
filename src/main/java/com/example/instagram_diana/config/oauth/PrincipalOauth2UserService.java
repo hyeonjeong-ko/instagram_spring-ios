@@ -61,7 +61,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService  {
         String email = oAuth2UserInfo.getEmail();
         String role = "ROLE_USER";
 
-        System.out.println("나 실행돼!!!!!!!!!!!!!!!!!????????????");
+        System.out.println("userService execute.");
         System.out.println(provider);
         System.out.println(providerId);
 
@@ -80,7 +80,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService  {
                     .name(null)
                     .email(email)
                     .phone(null)
-                    .password("ㅎㅇ") //new SHA256().encrypt("페이스북패스워드")
+                    .password("oauth2") //new SHA256().encrypt("페이스북패스워드")
                     .provider(provider)
                     .build();
             userRepository.save(userEntity);

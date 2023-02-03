@@ -2,6 +2,7 @@ package com.example.instagram_diana.src.utils;
 
 
 import com.example.instagram_diana.config.BaseException;
+import com.example.instagram_diana.config.BaseResponse;
 import com.example.instagram_diana.config.secret.Secret;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -14,8 +15,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
-import static com.example.instagram_diana.config.BaseResponseStatus.EMPTY_JWT;
-import static com.example.instagram_diana.config.BaseResponseStatus.INVALID_JWT;
+import static com.example.instagram_diana.config.BaseResponseStatus.*;
 
 @Service
 public class JwtService {
@@ -55,7 +55,12 @@ public class JwtService {
     public Long getUserIdx() throws BaseException {
         //1. JWT 추출
         String accessToken = getJwt();
+
+        System.out.println("나실행돼222222222222?"+accessToken);
+
         if(accessToken == null || accessToken.length() == 0){
+            System.out.println("나실행돼나비었어?"+accessToken);
+
             throw new BaseException(EMPTY_JWT);
         }
 
@@ -66,8 +71,8 @@ public class JwtService {
                     .setSigningKey(Secret.JWT_SECRET_KEY)
                     .parseClaimsJws(accessToken);
         } catch (Exception ignored) {
-            throw new BaseException(INVALID_JWT);
-        }
+            System.out.println("나 실행돼???????????????????????");
+            throw new BaseException(INVALID_JWT);        }
 
         // 3. userIdx 추출
         return claims.getBody().get("userIdx", Long.class);

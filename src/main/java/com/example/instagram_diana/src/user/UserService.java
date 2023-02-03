@@ -2,6 +2,7 @@ package com.example.instagram_diana.src.user;
 
 import com.example.instagram_diana.config.BaseException;
 import com.example.instagram_diana.src.model.User;
+import com.example.instagram_diana.src.user.model.PatchUserReq;
 import com.example.instagram_diana.src.user.model.PostLoginReq;
 import com.example.instagram_diana.src.user.model.PostUserReq;
 import com.example.instagram_diana.src.user.model.PostUserRes;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 import static com.example.instagram_diana.config.BaseResponseStatus.*;
 
@@ -81,8 +84,8 @@ public class UserService {
         }
     }
 
-
-        public PostUserRes logIn(PostLoginReq postLoginReq) throws BaseException {
+    @Transactional
+    public PostUserRes logIn(PostLoginReq postLoginReq) throws BaseException {
         try {
 
             // 아이디: 전화번호/사용자이름/이메일 => 비밀번호 찾기 로직
@@ -101,6 +104,8 @@ public class UserService {
                 // 3. 폰 존재시 폰으로 DB에서 유저 찾아오기
                 else if (userRepository.existsByPhone(loginInput)) {
                     user = userRepository.findByPhone(loginInput);
+                }else{ // 존재하지 않는 값일때
+                   return null;
                 }
 
                 String encryptPwd;
@@ -137,4 +142,25 @@ public class UserService {
 
         }
 
+    @Transactional
+    public void modifyUserInfo(Long userIdx, PatchUserReq patchUserReq) throws BaseException {
+
+        Optional<User> updateUser = userRepository.findById(userIdx);
+
+        updateUser.ifPresent(user->{
+            System.out.println("hi");
+            if(patchUserReq.getName()!=null){user.setName(patchUserReq.getName());}
+            if(patchUserReq.getUserName()!=null){user.setUsername(patchUserReq.getUserName());}
+            if(patchUserReq.getBio()!=null){user.setBio(patchUserReq.getBio());}
+            if(patchUserReq.getLink()!=null){user.setSite(patchUserReq.getLink());}
+            if(patchUserReq.getProfileUrl()!=null){user.setProfileUrl(patchUserReq.getProfileUrl());}
+
+            userRepository.save(user);
+
+        });
+
+
+
+
+    }
 }

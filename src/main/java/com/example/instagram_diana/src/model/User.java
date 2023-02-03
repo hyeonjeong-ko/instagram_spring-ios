@@ -38,8 +38,8 @@ public class User {
     @Column(name = "profileUrl")
     private String profileUrl;
 
-    @Column(name = "introduce", length = 225)
-    private String introduce;
+    @Column(name = "bio", length = 225)
+    private String bio;
 
     @Column(name = "site", length = 225)
     private String site;
@@ -75,6 +75,8 @@ public class User {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }
+
+
 }
 
 /*

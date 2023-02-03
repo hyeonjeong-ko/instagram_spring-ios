@@ -37,6 +37,11 @@ public enum BaseResponseStatus {
     POST_USERS_EXISTS_PHONE(false,2019,"중복된 전화번호입니다."),
     POST_USERS_EXISTS_NAME(false,2020,"이미 존재하는 유저 네임입니다."),
 
+    // [PATCH] /users
+    PATCH_USERS_NULL_NAME(false,2021,"유저 네임은 빈값이 될 수 없습니다."),
+
+
+
 
 
     /**
