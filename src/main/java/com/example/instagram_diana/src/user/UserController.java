@@ -6,10 +6,7 @@ import com.example.instagram_diana.config.BaseResponse;
 import com.example.instagram_diana.config.auth.PrincipalDetails;
 import com.example.instagram_diana.src.handler.CustomValidationException;
 import com.example.instagram_diana.src.model.User;
-import com.example.instagram_diana.src.user.model.PatchUserReq;
-import com.example.instagram_diana.src.user.model.PostLoginReq;
-import com.example.instagram_diana.src.user.model.PostUserReq;
-import com.example.instagram_diana.src.user.model.PostUserRes;
+import com.example.instagram_diana.src.user.model.*;
 import com.example.instagram_diana.src.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -92,6 +89,7 @@ public class UserController {
             getPostUserResBaseResponse(bindingResult);
         }else {
 
+
             // username,email,phone 중복 검사
             if(userService.checkNameDuplicate(postUserReq.getUserName())==true && postUserReq.getUserName()!=null){
                 return new BaseResponse<>(POST_USERS_EXISTS_NAME);
@@ -138,6 +136,7 @@ public class UserController {
             return getPostUserResBaseResponse(bindingResult);
         }else{
 
+
             try{
                 PostUserRes postLoginRes = userService.logIn(postLoginReq);
                 if (postLoginRes==null){
@@ -160,6 +159,11 @@ public class UserController {
     @PatchMapping("/{userIdx}")
     public BaseResponse<PatchUserReq> modifyUserName(@PathVariable("userIdx") long userIdx, @RequestBody PatchUserReq patchUserReq){
         try {
+
+            if(userService.checkUserExist(userIdx)){
+                return new BaseResponse<>(USER_ID_NOT_EXIST);
+            }
+
             // jwt에서 idx 추출.
             Long userIdxByJwt = jwtService.getUserIdx();
 
@@ -182,6 +186,27 @@ public class UserController {
         }
     }
 
+    // 유저 프로필 정보 조회
+    @GetMapping("/profile/{pageUserId}")
+    public BaseResponse<UserProfileDto> userProfile(@PathVariable long pageUserId){
+
+        try {
+            // 주소아이디 유효성 체크
+            if(!userService.checkUserExist(pageUserId)){
+                return new BaseResponse<>(USER_ID_NOT_EXIST);
+            }
+
+            // jwt에서 idx 추출.
+            long loginUserId = jwtService.getUserIdx();
+            UserProfileDto userProfileDto = userService.UserProfile(pageUserId,loginUserId);
+            return new BaseResponse<>(userProfileDto);
+
+        }catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+
     // 유효성 검사 함수
     private BaseResponse<PostUserRes> getPostUserResBaseResponse(BindingResult bindingResult) {
         Map<String,String> errorMap = new HashMap<>();
@@ -192,5 +217,7 @@ public class UserController {
         }
         throw new CustomValidationException("유효성 검사 실패",errorMap);
     }
+
+
 
 }

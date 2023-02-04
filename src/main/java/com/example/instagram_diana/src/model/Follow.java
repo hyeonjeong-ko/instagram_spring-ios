@@ -44,11 +44,11 @@ public class Follow {
     @LastModifiedDate
     @Column(name = "updatedAt",nullable = false)
     private LocalDateTime updatedAt;
+
     @Size(max = 225)
     @NotNull
     @Column(name = "status", nullable = false, length = 225)
     private String status;
-
 
 
 }

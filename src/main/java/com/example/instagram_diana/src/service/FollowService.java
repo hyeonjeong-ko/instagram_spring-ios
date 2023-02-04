@@ -1,7 +1,7 @@
 package com.example.instagram_diana.src.service;
 
 
-import com.example.instagram_diana.src.follow.FollowRepository;
+import com.example.instagram_diana.src.repository.FollowRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +14,8 @@ import javax.persistence.EntityManager;
 public class FollowService {
 
     private final FollowRepository followRepository;
+
+
 
     private final EntityManager em;
 

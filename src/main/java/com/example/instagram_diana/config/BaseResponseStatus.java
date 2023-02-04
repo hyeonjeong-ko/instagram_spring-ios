@@ -32,7 +32,7 @@ public enum BaseResponseStatus {
     POST_USERS_INVALID_EMAIL(false, 2016, "이메일 형식을 확인해주세요."),
     POST_USERS_EXISTS_EMAIL(false,2017,"중복된 이메일입니다."),
 
-    //custom
+    //custom******************************************************************** made by 현정
     POST_USERS_EMPTY_ID(false, 2018, "이메일 또는 전화번호를 입력해주세요."),
     POST_USERS_EXISTS_PHONE(false,2019,"중복된 전화번호입니다."),
     POST_USERS_EXISTS_NAME(false,2020,"이미 존재하는 유저 네임입니다."),
@@ -40,7 +40,19 @@ public enum BaseResponseStatus {
     // [PATCH] /users
     PATCH_USERS_NULL_NAME(false,2021,"유저 네임은 빈값이 될 수 없습니다."),
 
+    // /app/follow/{userId}
+    USER_ID_NOT_EXIST(false,2022,"유저아이디를 정확히 입력해주세요."),
 
+    // /app/follow/{userId}
+    USER_ID_FOLLOW_EXISTS(false,2023,"이미 구독한 유저입니다."),
+    USER_ID_UNFOLLOW_EXISTS(false,2024,"구독하지않은 유저입니다."),
+    USER_ID_CANNOT_FOLLOW(false,2024,"자기 자신은 구독할 수 없습니다"),
+
+    // /app/users/{pageUserId}
+    USER_ID_PROFILE_NOT_EXISTS(false,2024,"해당 요청 프로필 페이지는 없습니다."),
+
+    // /app/users/{userId}/posts
+    POST_FILE_EMPTY(false,2030,"파일을 입력해주세요."),
 
 
 

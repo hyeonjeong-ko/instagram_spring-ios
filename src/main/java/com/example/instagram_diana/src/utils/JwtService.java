@@ -26,8 +26,6 @@ public class JwtService {
     @return String
      */
     public String createJwt(Long userIdx){
-
-        System.out.println("씨발진짜!!!!!!!!!!!!!!");
         Date now = new Date();
         return Jwts.builder()
                 .setHeaderParam("type","jwt")
@@ -56,10 +54,8 @@ public class JwtService {
         //1. JWT 추출
         String accessToken = getJwt();
 
-        System.out.println("나실행돼222222222222?"+accessToken);
 
         if(accessToken == null || accessToken.length() == 0){
-            System.out.println("나실행돼나비었어?"+accessToken);
 
             throw new BaseException(EMPTY_JWT);
         }
@@ -71,7 +67,6 @@ public class JwtService {
                     .setSigningKey(Secret.JWT_SECRET_KEY)
                     .parseClaimsJws(accessToken);
         } catch (Exception ignored) {
-            System.out.println("나 실행돼???????????????????????");
             throw new BaseException(INVALID_JWT);        }
 
         // 3. userIdx 추출

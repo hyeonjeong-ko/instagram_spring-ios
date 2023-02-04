@@ -1,5 +1,7 @@
 package com.example.instagram_diana.src.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -15,13 +17,22 @@ public class Post {
     @Column(name = "postId", columnDefinition = "INT UNSIGNED not null")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "userId", nullable = false)
-    private User user;
+    // 이부분을 아래로 수정함.
+//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+//    @JoinColumn(name = "userId", nullable = false)
+//    private User user;
 
     @Lob
-    @Column(name = "content", nullable = false)
+    @Column(name = "content", nullable = true)
     private String content;
+
+    //추가된부분 ---------------
+    @JsonIgnoreProperties({"posts"})
+    @JoinColumn(name = "userId", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    private User user;
+
+    //------------------------
 
     @CreatedDate
     @Column(name = "createdAt", nullable = false)
@@ -33,7 +44,5 @@ public class Post {
 
     @Column(name = "status", nullable = false, length = 20)
     private String status;
-
-
 
 }

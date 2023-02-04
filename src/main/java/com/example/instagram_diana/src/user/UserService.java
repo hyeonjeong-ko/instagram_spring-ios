@@ -1,11 +1,9 @@
 package com.example.instagram_diana.src.user;
 
 import com.example.instagram_diana.config.BaseException;
+import com.example.instagram_diana.src.repository.FollowRepository;
 import com.example.instagram_diana.src.model.User;
-import com.example.instagram_diana.src.user.model.PatchUserReq;
-import com.example.instagram_diana.src.user.model.PostLoginReq;
-import com.example.instagram_diana.src.user.model.PostUserReq;
-import com.example.instagram_diana.src.user.model.PostUserRes;
+import com.example.instagram_diana.src.user.model.*;
 import com.example.instagram_diana.src.utils.JwtService;
 import com.example.instagram_diana.src.utils.SHA256;
 import org.slf4j.Logger;
@@ -25,16 +23,21 @@ public class UserService {
     final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final JwtService jwtService;
     private final UserRepository userRepository;
+    private final FollowRepository followRepository;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserService(JwtService jwtService, UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserService(JwtService jwtService, UserRepository userRepository, FollowRepository followRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.jwtService = jwtService;
         this.userRepository = userRepository;
+        this.followRepository = followRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
+    public boolean checkUserExist(long userId){
+        return userRepository.existsById(userId);
+    }
     public boolean checkEmailDuplicate(String email){
         return userRepository.existsByEmail(email);
     }
@@ -158,9 +161,35 @@ public class UserService {
             userRepository.save(user);
 
         });
-
-
-
-
     }
+
+    @Transactional(readOnly = true)
+    public UserProfileDto UserProfile(long pageUserId,long loginUserId) {
+
+        UserProfileDto dto = new UserProfileDto();
+
+        Optional<User> userEntity = userRepository.findById(pageUserId);
+        userEntity.ifPresent(user->{
+            dto.setUser(user);
+            dto.setPageOwnerState(pageUserId==loginUserId);
+            dto.setPostCount(user.getPosts().size());
+
+            int followState = followRepository.followState(loginUserId,pageUserId);
+            int followingCount = followRepository.followingCount(pageUserId);
+            int followerCount = followRepository.followerCount(pageUserId);
+
+            dto.setFollowState(followState == 1);
+            dto.setFollowing(followingCount);
+            dto.setFollower(followerCount);
+
+        });
+        return dto;
+    }
+
+    @Transactional(readOnly = true)
+    public User findUserById(long userIdx){
+        User user = userRepository.findById(userIdx).get();
+        return user;
+    }
+
 }

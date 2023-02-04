@@ -1,5 +1,6 @@
 package com.example.instagram_diana.src.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @NoArgsConstructor
@@ -60,6 +62,13 @@ public class User {
 
     @Column(name = "status", length = 20, nullable = false)
     private String status;
+
+    // 추가 ------------------
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @JsonIgnoreProperties({"user"})
+    private List<Post> posts;
+
+    //-----------------------
 
 
     @Builder

@@ -48,6 +48,12 @@ dependencies {
     // 2차 custom
     implementation('org.springframework.boot:spring-boot-starter-validation')
 
+    //aws
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+    //file
+    implementation 'commons-io:commons-io:2.6'
+
 }
 
 tasks.named('test') {

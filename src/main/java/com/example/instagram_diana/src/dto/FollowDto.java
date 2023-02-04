@@ -1,4 +1,4 @@
-package com.example.instagram_diana.src.follow;
+package com.example.instagram_diana.src.dto;
 
 
 import lombok.AllArgsConstructor;
@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class FollowDto {
-    private int id;
-    private String userName;
-    private Integer followState;
-    private Integer equalUserState;
+    private long fromUserId;
+    private long toUserId;
+//    private Integer followState;
+//    private Integer equalUserState;
 }
