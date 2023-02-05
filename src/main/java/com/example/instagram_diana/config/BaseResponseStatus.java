@@ -55,6 +55,10 @@ public enum BaseResponseStatus {
     POST_FILE_EMPTY(false,2030,"파일을 입력해주세요."),
 
 
+    // /app/like/{postId}
+    POST_ID_NOT_EXISTS(false,2031,"게시물 아이디가 존재하지 않습니다."),
+    POST_CANNOT_MYSELF(false,2032,"자기 자신은 좋아요 할 수 없습니다."),
+
 
     /**
      * 3000 : Response 오류

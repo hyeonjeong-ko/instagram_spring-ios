@@ -1,9 +1,16 @@
 package com.example.instagram_diana.src.repository;
 
 import com.example.instagram_diana.src.model.Post;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post,Long> {
+    @Query(value="SELECT * FROM Post WHERE userId IN (SELECT toUserId FROM Follow WHERE fromUserId=:loginUserId) ORDER BY postId DESC",nativeQuery=true)
+    List<Post> userFollowingPosts(long loginUserId);
 
 
 }

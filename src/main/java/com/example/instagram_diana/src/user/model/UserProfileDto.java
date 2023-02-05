@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.w3c.dom.stylesheets.MediaList;
+
+import java.util.List;
 
 @Builder
 @AllArgsConstructor
@@ -13,8 +16,11 @@ import lombok.NoArgsConstructor;
 public class UserProfileDto {
     private boolean pageOwnerState;
     private int postCount;
-    private boolean followState; // 구독한 상태인지
+    private boolean followState; // 구독한 상태인지(구독=1)
     private int follower;
     private int following;
-    private User user;
+
+    private UserProfileUserDto profileUserDto;
+    private List<String> ThumbnailUrls;
+
 }

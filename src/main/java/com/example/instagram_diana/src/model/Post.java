@@ -3,6 +3,7 @@ package com.example.instagram_diana.src.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -11,6 +12,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
+//@ToString(exclude = "User")
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

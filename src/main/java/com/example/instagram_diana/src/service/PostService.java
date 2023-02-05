@@ -13,6 +13,8 @@ import org.springframework.jdbc.core.metadata.PostgresCallMetaDataProvider;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -46,6 +48,20 @@ public class PostService {
             postMedia.setUpdatedAt(LocalDateTime.now());
             postMediaRepository.save(postMedia);
         }
+    }
+
+    public boolean checkPostExist(long postId){
+        return postRepository.existsById(postId);
+    }
+
+
+    public long getPostWriter(long postId){
+        Post postEntity= postRepository.findById(postId).get();
+        return postEntity.getUser().getId();
+    }
+
+    public List<Post> getUserFollowingPosts(long loignUserId){
+        return postRepository.userFollowingPosts(loignUserId);
     }
 
 

@@ -1,8 +1,16 @@
 package com.example.instagram_diana.src.user;
 
 import com.example.instagram_diana.config.BaseException;
+import com.example.instagram_diana.src.dto.userFollowingPostDto;
+import com.example.instagram_diana.src.model.Post;
+import com.example.instagram_diana.src.model.PostMedia;
 import com.example.instagram_diana.src.repository.FollowRepository;
 import com.example.instagram_diana.src.model.User;
+import com.example.instagram_diana.src.repository.PostMediaRepository;
+import com.example.instagram_diana.src.repository.PostRepository;
+import com.example.instagram_diana.src.service.LikeService;
+import com.example.instagram_diana.src.service.PostMediaService;
+import com.example.instagram_diana.src.service.PostService;
 import com.example.instagram_diana.src.user.model.*;
 import com.example.instagram_diana.src.utils.JwtService;
 import com.example.instagram_diana.src.utils.SHA256;
@@ -13,6 +21,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static com.example.instagram_diana.config.BaseResponseStatus.*;
@@ -25,14 +35,27 @@ public class UserService {
     private final UserRepository userRepository;
     private final FollowRepository followRepository;
 
+    //private final PostService postService;
+
+    private final PostRepository postRepository;
+
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final PostMediaRepository postMediaRepository;
+    private final PostMediaService postMediaService;
+
+    private final LikeService likeService;
 
     @Autowired
-    public UserService(JwtService jwtService, UserRepository userRepository, FollowRepository followRepository, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserService(JwtService jwtService, UserRepository userRepository, FollowRepository followRepository, PostRepository postRepository, BCryptPasswordEncoder bCryptPasswordEncoder,
+                       PostMediaRepository postMediaRepository, PostMediaService postMediaService, LikeService likeService) {
         this.jwtService = jwtService;
         this.userRepository = userRepository;
         this.followRepository = followRepository;
+        this.postRepository = postRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.postMediaRepository = postMediaRepository;
+        this.postMediaService = postMediaService;
+        this.likeService = likeService;
     }
 
     public boolean checkUserExist(long userId){
@@ -48,6 +71,12 @@ public class UserService {
 
     public boolean checkNameDuplicate(String userName) {
         return userRepository.existsByUsername(userName);
+    }
+
+    @Transactional(readOnly = true)
+    public User findUserById(long userIdx){
+        User user = userRepository.findById(userIdx).get();
+        return user;
     }
 
     @Transactional
@@ -168,9 +197,20 @@ public class UserService {
 
         UserProfileDto dto = new UserProfileDto();
 
-        Optional<User> userEntity = userRepository.findById(pageUserId);
-        userEntity.ifPresent(user->{
-            dto.setUser(user);
+
+        Optional<User> pageUser = userRepository.findById(pageUserId);
+        pageUser.ifPresent(user->{
+
+            UserProfileUserDto PageUserInfo = UserProfileUserDto
+                    .builder()
+                    .name(user.getName())
+                    .username(user.getUsername())
+                    .bio(user.getBio())
+                    .profileUrl(user.getProfileUrl())
+                    .site(user.getSite())
+                    .build();
+
+            dto.setProfileUserDto(PageUserInfo);
             dto.setPageOwnerState(pageUserId==loginUserId);
             dto.setPostCount(user.getPosts().size());
 
@@ -182,14 +222,55 @@ public class UserService {
             dto.setFollowing(followingCount);
             dto.setFollower(followerCount);
 
+            // 대표 이미지들
+            List<PostMedia> postMedias = postMediaRepository.userPageThumbnails();
+            //ThumbnailsUrls
+            //List<String> ThumbnailsUrls = null;
+            System.out.println(postMedias);
+            List<String> ThumbnailsUrls = new ArrayList<>(postMedias.size());
+
+            postMedias.forEach((postMedia)->{
+                ThumbnailsUrls.add(postMedia.getMediaUrl());
+            });
+
+            dto.setThumbnailUrls(ThumbnailsUrls);
         });
         return dto;
     }
 
-    @Transactional(readOnly = true)
-    public User findUserById(long userIdx){
-        User user = userRepository.findById(userIdx).get();
-        return user;
+    public List<userFollowingPostDto> userFollowingPosts(long loginUserId) {
+
+        // 유저 팔로잉 게시물들
+        List<Post> userFollowingPosts = postRepository.userFollowingPosts(loginUserId);
+
+        // 유저 팔로잉 게시물들의 info dto list
+        List<userFollowingPostDto> dtos = new ArrayList<>(userFollowingPosts.size());
+
+        // dtos에 각 post정보 하나씩 추가
+        userFollowingPosts.forEach((post)->{
+            userFollowingPostDto dto = new userFollowingPostDto();
+            dto.setPostId(post.getId());
+            dto.setUserName(post.getUser().getUsername());
+            dto.setContent(post.getContent());
+
+            System.out.println("나 실행돼!??????????============ >"+dto.getPostId());
+            System.out.println("나 실행돼!??????????============ >"+dto.getUserName());
+            System.out.println("나 실행돼!??????????============ >"+dto.getContent());
+
+            List<String> postMediaUrls = postMediaService.getMediaUrls(post.getId());
+
+            long count = likeService.countPostLikes(post.getId());
+            dto.setImgUrls(postMediaUrls);
+            dto.setLikeCount(count);
+            dto.setCommentCount(5);
+
+            dtos.add(dto);
+
+        });
+        return dtos;
     }
+
+
+
 
 }

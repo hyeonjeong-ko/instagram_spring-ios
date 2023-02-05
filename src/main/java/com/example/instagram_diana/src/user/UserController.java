@@ -4,6 +4,7 @@ package com.example.instagram_diana.src.user;
 import com.example.instagram_diana.config.BaseException;
 import com.example.instagram_diana.config.BaseResponse;
 import com.example.instagram_diana.config.auth.PrincipalDetails;
+import com.example.instagram_diana.src.dto.userFollowingPostDto;
 import com.example.instagram_diana.src.handler.CustomValidationException;
 import com.example.instagram_diana.src.model.User;
 import com.example.instagram_diana.src.user.model.*;
@@ -19,6 +20,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.example.instagram_diana.config.BaseResponseStatus.*;
@@ -160,7 +162,7 @@ public class UserController {
     public BaseResponse<PatchUserReq> modifyUserName(@PathVariable("userIdx") long userIdx, @RequestBody PatchUserReq patchUserReq){
         try {
 
-            if(userService.checkUserExist(userIdx)){
+            if(!userService.checkUserExist(userIdx)){
                 return new BaseResponse<>(USER_ID_NOT_EXIST);
             }
 
@@ -200,6 +202,22 @@ public class UserController {
             long loginUserId = jwtService.getUserIdx();
             UserProfileDto userProfileDto = userService.UserProfile(pageUserId,loginUserId);
             return new BaseResponse<>(userProfileDto);
+
+        }catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+
+    // 유저 팔로잉 유저 post list 조회
+    @GetMapping("/following-posts")
+    public BaseResponse <List<userFollowingPostDto>> userFollowingPosts(){
+        try {
+            // jwt에서 idx 추출.
+            long loginUserId = jwtService.getUserIdx();
+            String res = "userId"+loginUserId + " 님의 유저 팔로잉 포스트 정보 조회";
+            List<userFollowingPostDto> dtos = userService.userFollowingPosts(loginUserId);
+            return new BaseResponse<>(res,dtos);
 
         }catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
