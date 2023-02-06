@@ -13,5 +13,6 @@ public class FollowUserDto {
     private String profileImageUrl;
     private Integer followState;
     private Integer equalUserState; // 나 자신이면 뜨지않는다.
+//    private Long pageUserId;
 
 }
