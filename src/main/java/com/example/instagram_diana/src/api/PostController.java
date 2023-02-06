@@ -99,7 +99,7 @@ public class PostController {
 
         try{
 
-            // 주소의 유저번호가 없으면 에러
+            // 주소의 포스트번호가 없으면 에러
             if (!postService.checkPostExist(postId)){
                 return new BaseResponse<>(POST_ID_NOT_EXISTS);
             }

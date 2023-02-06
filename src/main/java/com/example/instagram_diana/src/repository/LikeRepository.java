@@ -17,4 +17,8 @@ public interface LikeRepository extends JpaRepository<PostLike,Long> {
 
     Long countBypostId(long postId);
 
+//    @Modifying
+//    @Query(value = "SELECT exists( SELECT * FROM postLike WHERE EXISTS (SELECT * FROM postLike where (postId=:postId and userId=:loginUserId))) AS likeState;",nativeQuery = true)
+//    int likeState(long postId,long loginUserId);
+
 }

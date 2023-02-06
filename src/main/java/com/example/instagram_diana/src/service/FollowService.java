@@ -1,28 +1,29 @@
 package com.example.instagram_diana.src.service;
-
-
+import com.example.instagram_diana.src.dto.FollowUserDto;
+import com.example.instagram_diana.src.repository.FollowDao;
 import com.example.instagram_diana.src.repository.FollowRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-
+import javax.persistence.Query;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
 public class FollowService {
 
     private final FollowRepository followRepository;
+    private final FollowDao followDao; // em구현체; repo
 
 
 
-    private final EntityManager em;
 
-//    @Transactional
-//    public List<FollowDto> followList(){
-//
-//    }
+    @Transactional(readOnly = true)
+    public List<FollowUserDto> followingList(long loginUserId, long pageUserId){
+        return followDao.followingList(loginUserId,pageUserId);
+    }
 
     @Transactional
     public void follow(long fromUserId,long toUserId){
@@ -42,4 +43,5 @@ public class FollowService {
 
         return followRepository.checkFollow(fromUserId,toUserId);
     }
+
 }

@@ -4,21 +4,24 @@ package com.example.instagram_diana.src.user;
 import com.example.instagram_diana.config.BaseException;
 import com.example.instagram_diana.config.BaseResponse;
 import com.example.instagram_diana.config.auth.PrincipalDetails;
+import com.example.instagram_diana.src.dto.FollowUserDto;
+import com.example.instagram_diana.src.dto.ProfileImageUploadDto;
 import com.example.instagram_diana.src.dto.userFollowingPostDto;
 import com.example.instagram_diana.src.handler.CustomValidationException;
-import com.example.instagram_diana.src.model.User;
+import com.example.instagram_diana.src.service.FollowService;
 import com.example.instagram_diana.src.user.model.*;
 import com.example.instagram_diana.src.utils.JwtService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +34,7 @@ public class UserController {
     final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     private final UserService userService;
+    private final FollowService followService;
 
     @Autowired
     private final JwtService jwtService;
@@ -38,8 +42,9 @@ public class UserController {
 
 
 
-    public UserController(UserService userService, JwtService jwtService){
+    public UserController(UserService userService, FollowService followService, JwtService jwtService){
         this.userService = userService;
+        this.followService = followService;
         this.jwtService = jwtService;
     }
 
@@ -161,7 +166,6 @@ public class UserController {
     @PatchMapping("/{userIdx}")
     public BaseResponse<PatchUserReq> modifyUserName(@PathVariable("userIdx") long userIdx, @RequestBody PatchUserReq patchUserReq){
         try {
-
             if(!userService.checkUserExist(userIdx)){
                 return new BaseResponse<>(USER_ID_NOT_EXIST);
             }
@@ -223,6 +227,44 @@ public class UserController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    @GetMapping ("/{userId}/following-list")
+    public BaseResponse<List<FollowUserDto>> FollowingList(@PathVariable("userId") long pageUserId){
+        try{
+            // jwt에서 idx 추출.
+            long loginUserId = jwtService.getUserIdx();
+
+            List<FollowUserDto> followUserDtos = followService.followingList(loginUserId, pageUserId);
+
+            return new BaseResponse<>("구독리스트 조회 성공",followUserDtos);
+
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+//    //유저 프로필 url 등록
+//    @PostMapping ("/{pageUserId}/profile-image")
+//    public BaseResponse<ProfileImageUploadDto> profileImageUpload(@PathVariable("pageUserId") long pageUserId,
+//                                                                  @RequestParam("profileImageFile") MultipartFile imgFile){
+//        try{
+//            // jwt에서 idx 추출.
+//            long loginUserId = jwtService.getUserIdx();
+//
+//            if(pageUserId!=loginUserId){
+//                return new BaseResponse<>(USER_ID_NOT_EXIST);
+//            }
+//
+//            ProfileImageUploadDto dto= userService.profileUpload(loginUserId,imgFile);
+//
+//            return new BaseResponse<>("프로필 이미지 업로드 성공",dto);
+//
+//        } catch (BaseException exception) {
+//            return new BaseResponse<>((exception.getStatus()));
+//        }  catch (BaseException exception) {
+//            return new BaseResponse<>((exception.getStatus()));
+//        }
+//    }
 
 
     // 유효성 검사 함수

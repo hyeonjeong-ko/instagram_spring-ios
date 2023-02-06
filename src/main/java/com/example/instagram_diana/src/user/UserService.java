@@ -1,16 +1,19 @@
 package com.example.instagram_diana.src.user;
 
 import com.example.instagram_diana.config.BaseException;
+import com.example.instagram_diana.src.dto.DayDto;
+import com.example.instagram_diana.src.dto.ProfileImageUploadDto;
 import com.example.instagram_diana.src.dto.userFollowingPostDto;
 import com.example.instagram_diana.src.model.Post;
 import com.example.instagram_diana.src.model.PostMedia;
+import com.example.instagram_diana.src.repository.DayDao;
 import com.example.instagram_diana.src.repository.FollowRepository;
 import com.example.instagram_diana.src.model.User;
 import com.example.instagram_diana.src.repository.PostMediaRepository;
 import com.example.instagram_diana.src.repository.PostRepository;
 import com.example.instagram_diana.src.service.LikeService;
 import com.example.instagram_diana.src.service.PostMediaService;
-import com.example.instagram_diana.src.service.PostService;
+import com.example.instagram_diana.src.testS3.S3Service;
 import com.example.instagram_diana.src.user.model.*;
 import com.example.instagram_diana.src.utils.JwtService;
 import com.example.instagram_diana.src.utils.SHA256;
@@ -20,7 +23,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -45,9 +50,13 @@ public class UserService {
 
     private final LikeService likeService;
 
+    private final S3Service s3Service;
+
+    private final DayDao dayDao;
+
     @Autowired
     public UserService(JwtService jwtService, UserRepository userRepository, FollowRepository followRepository, PostRepository postRepository, BCryptPasswordEncoder bCryptPasswordEncoder,
-                       PostMediaRepository postMediaRepository, PostMediaService postMediaService, LikeService likeService) {
+                       PostMediaRepository postMediaRepository, PostMediaService postMediaService, LikeService likeService, S3Service s3Service, DayDao dayDao) {
         this.jwtService = jwtService;
         this.userRepository = userRepository;
         this.followRepository = followRepository;
@@ -56,9 +65,13 @@ public class UserService {
         this.postMediaRepository = postMediaRepository;
         this.postMediaService = postMediaService;
         this.likeService = likeService;
+        this.s3Service = s3Service;
+        this.dayDao = dayDao;
     }
 
     public boolean checkUserExist(long userId){
+
+        System.out.println("체크유저아이디 서비스 값:"+ userRepository.existsById(userId));
         return userRepository.existsById(userId);
     }
     public boolean checkEmailDuplicate(String email){
@@ -253,10 +266,6 @@ public class UserService {
             dto.setUserName(post.getUser().getUsername());
             dto.setContent(post.getContent());
 
-            System.out.println("나 실행돼!??????????============ >"+dto.getPostId());
-            System.out.println("나 실행돼!??????????============ >"+dto.getUserName());
-            System.out.println("나 실행돼!??????????============ >"+dto.getContent());
-
             List<String> postMediaUrls = postMediaService.getMediaUrls(post.getId());
 
             long count = likeService.countPostLikes(post.getId());
@@ -264,13 +273,39 @@ public class UserService {
             dto.setLikeCount(count);
             dto.setCommentCount(5);
 
+            // 추가된 부분들
+            dto.setPostUserId(post.getUser().getId());
+
+            // loginUser 가 해당페이지 좋아요한 상태인지
+            int likeState = likeService.LikeState(post.getId(),loginUserId).getLikeState();
+            dto.setLikeState(likeState);
+
+            // dayDao 가져와담기
+            DayDto dayInfo = dayDao.monthOfDay(post.getId());
+            dto.setDayInfo(dayInfo);
+
             dtos.add(dto);
 
         });
         return dtos;
     }
 
+    @Transactional
+    public ProfileImageUploadDto profileUpload(long loginUserId,MultipartFile imgFile) throws IOException {
+        User user = findUserById(loginUserId);
 
+        ProfileImageUploadDto dto = new ProfileImageUploadDto();
 
+        // s3에 파일 저장
+        String profileImgUrl = s3Service.uploadFile(imgFile);
+        dto.setProfileImageUrl(profileImgUrl);
 
+        // 프로필정보 업데이트
+        user.setProfileUrl(profileImgUrl);
+
+        // table에 저장
+        userRepository.save(user);
+
+        return dto;
+    }
 }
