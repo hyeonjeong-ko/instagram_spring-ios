@@ -26,6 +26,4 @@ public interface FollowRepository extends JpaRepository<Follow,Long> {
 
     @Query(value = "SELECT COUNT(*) FROM Follow WHERE toUserId=:pageUserId",nativeQuery = true)
     int followerCount(long pageUserId);
-
-
 }

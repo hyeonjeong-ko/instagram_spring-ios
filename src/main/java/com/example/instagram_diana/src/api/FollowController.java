@@ -115,4 +115,37 @@ public class FollowController {
         }
     }
 
+    @GetMapping("/follow-state/users/{userId}")
+    public BaseResponse<?> followState(@PathVariable("userId") long toUserId){
+
+        if (!userService.checkUserExist(toUserId)){
+            return new BaseResponse<>(USER_ID_NOT_EXIST);
+        }
+
+        try{
+            Long fromUserId = jwtService.getUserIdx();
+
+            if(toUserId==fromUserId){
+                return new BaseResponse<>(USER_ID_CANNOT_FOLLOW);
+            }
+
+            String returnMessage;
+            int isfollow=-1;
+
+
+            if(followService.checkFollow(fromUserId,toUserId)==1){
+                returnMessage =  "id:"+ fromUserId + "님이 " + "id:" + toUserId + "님을 팔로우 한 상태입니다.";
+                isfollow=1;
+            }else{
+                returnMessage =  "id:"+ fromUserId + "님이 " + "id:" + toUserId + "님을 언팔로우 한 상태입니다.";
+                isfollow=0;
+            }
+
+            return new BaseResponse<>(returnMessage,isfollow);
+
+        }catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
 }

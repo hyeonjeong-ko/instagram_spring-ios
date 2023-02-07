@@ -55,9 +55,20 @@ public enum BaseResponseStatus {
     POST_FILE_EMPTY(false,2030,"파일을 입력해주세요."),
 
 
+
+
     // /app/like/{postId}
     POST_ID_NOT_EXISTS(false,2031,"게시물 아이디가 존재하지 않습니다."),
     POST_CANNOT_MYSELF(false,2032,"자기 자신은 좋아요 할 수 없습니다."),
+
+    // [DELETE] /app/users/posts/{postId}
+    POST_CANNOT_DELETE(false,2033,"게시물 삭제 권한이 없습니다."),
+
+    // [PATCH] /app/users/{userId}/email
+    PATCH_CAANOT_EXECUTE(false,2034,"수정 권한이 없습니다."),
+    PATCH_USERS_INVALID_EMAIL(false,2035,"이메일 형식을 확인해주세요."),
+    PATCH_USERS_INVALID_PHONE(false,2036,"전화번호 형식을 확인해주세요."),
+
 
 
     /**

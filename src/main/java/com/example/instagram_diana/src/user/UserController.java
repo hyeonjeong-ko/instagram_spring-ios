@@ -25,6 +25,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.example.instagram_diana.config.BaseResponseStatus.*;
 
@@ -164,7 +166,7 @@ public class UserController {
      */
     @ResponseBody
     @PatchMapping("/{userIdx}")
-    public BaseResponse<PatchUserReq> modifyUserName(@PathVariable("userIdx") long userIdx, @RequestBody PatchUserReq patchUserReq){
+    public BaseResponse<PatchUserReq> modifyUserInfo(@PathVariable("userIdx") long userIdx, @RequestBody PatchUserReq patchUserReq){
         try {
             if(!userService.checkUserExist(userIdx)){
                 return new BaseResponse<>(USER_ID_NOT_EXIST);
@@ -242,6 +244,68 @@ public class UserController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+
+    // 이메일 수정
+    @PatchMapping("/{userId}/email")
+    public BaseResponse<?> changeEmail(@PathVariable("userId") long userId,@RequestBody HashMap<Object,String> hash){
+        try{
+            // 주소아이디 유효성 체크
+            if(!userService.checkUserExist(userId)){
+                return new BaseResponse<>(USER_ID_NOT_EXIST);
+            }
+            Long loginUserId = jwtService.getUserIdx();
+
+            if(loginUserId!=userId){
+                return new BaseResponse<>(PATCH_CAANOT_EXECUTE);
+            }
+
+            boolean err = false;
+            String regex = "^[_a-z0-9-]+(.[_a-z0-9-]+)*@(?:\\w+\\.)+\\w+$";
+            Pattern p = Pattern.compile(regex);
+            Matcher m = p.matcher(hash.get("email"));
+            if(!m.matches()) {
+                return new BaseResponse<>(PATCH_USERS_INVALID_EMAIL);
+            }
+
+            userService.modifyUserEmail(userId,hash.get("email"));
+            return new BaseResponse<>("유저 이메일 수정이 완료되었습니다.");
+
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+    }
+
+    @PatchMapping("/{userId}/phone")
+    public BaseResponse<?> changePhoneNumber(@PathVariable("userId") long userId,@RequestBody HashMap<Object,String> hash){
+        try{
+            // 주소아이디 유효성 체크
+            if(!userService.checkUserExist(userId)){
+                return new BaseResponse<>(USER_ID_NOT_EXIST);
+            }
+            Long loginUserId = jwtService.getUserIdx();
+
+            if(loginUserId!=userId){
+                return new BaseResponse<>(PATCH_CAANOT_EXECUTE);
+            }
+
+            String pattern2 = "^\\d{3}-\\d{3,4}-\\d{4}$";
+            if(!Pattern.matches(pattern2,hash.get("phone"))) {
+                return new BaseResponse<>(PATCH_USERS_INVALID_PHONE);
+            }
+
+
+            userService.modifyUserPhone(userId,hash.get("phone"));
+            return new BaseResponse<>("유저 전화번호 수정이 완료되었습니다.");
+
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+    }
+
+
 
 //    //유저 프로필 url 등록
 //    @PostMapping ("/{pageUserId}/profile-image")

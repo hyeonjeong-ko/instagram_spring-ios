@@ -3,6 +3,7 @@ package com.example.instagram_diana.src.api;
 import com.example.instagram_diana.config.BaseException;
 import com.example.instagram_diana.config.BaseResponse;
 import com.example.instagram_diana.src.dto.PostUploadDto;
+import com.example.instagram_diana.src.model.Post;
 import com.example.instagram_diana.src.model.PostMedia;
 import com.example.instagram_diana.src.service.LikeService;
 import com.example.instagram_diana.src.service.PostService;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.example.instagram_diana.config.BaseResponseStatus.*;
@@ -139,7 +141,46 @@ public class PostController {
         return new BaseResponse<>("좋아요 취소 요청에 성공했습니다.");
     }
 
-    //public BaseResponse
+    // 포스트 수정(hashmap으로 json받기)
+    @PatchMapping("/posts/{postId}")
+    public BaseResponse<?> modifyPostContent(@PathVariable("postId") long postId, @RequestBody HashMap<Object,String> hash){
+        // 주소의 포스트번호가 없으면 에러
+        if (!postService.checkPostExist(postId)){
+            return new BaseResponse<>(POST_ID_NOT_EXISTS);
+        }
+
+        try{
+            System.out.println(hash.get("content")+"!!!!!!2222222222222222");
+            Long loginUserId = jwtService.getUserIdx();
+            postService.modifyPostContent(postId,loginUserId,hash.get("content"));
+            return new BaseResponse<>("게시물 내용 수정에 성공했습니다.");
+
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+    }
+
+    // 포스트 삭제
+    @DeleteMapping ("/posts/{postId}")
+    public BaseResponse<?> deletePost(@PathVariable("postId") long postId){
+
+        // 주소의 포스트번호가 없으면 에러
+        if (!postService.checkPostExist(postId)){
+            return new BaseResponse<>(POST_ID_NOT_EXISTS);
+        }
+
+        try{
+            Long loginUserId = jwtService.getUserIdx();
+
+            postService.deletePost(postId,loginUserId);
+            return new BaseResponse<>("게시물 삭제 요청이 성공했습니다.");
+
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
+    }
 
 }
 

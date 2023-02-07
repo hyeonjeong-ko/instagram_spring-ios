@@ -9,6 +9,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity
@@ -34,6 +35,11 @@ public class Post {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private User user;
 
+    // 2차 추가된 부분
+
+    @OneToMany(mappedBy = "post",cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
+    private List<PostMedia> postMediaList;
+
     //------------------------
 
     @CreatedDate
@@ -48,3 +54,5 @@ public class Post {
     private String status;
 
 }
+
+// post가 삭제되면 postMedia도 모두 삭제되어야 함...!

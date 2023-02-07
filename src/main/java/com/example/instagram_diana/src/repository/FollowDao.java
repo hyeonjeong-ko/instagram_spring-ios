@@ -20,7 +20,8 @@ public class FollowDao {
 
 
     public List<FollowUserDto> followingList(long loginUserId, long pageUserId){
-        String Query = "SELECT u.userId,u.name,u.username,u.profileUrl,(select true FROM Follow where fromUserId=? AND toUserId=u.userId) followState,(?=u.userId) equalUserState FROM User u INNER JOIN Follow f ON u.userId=toUserId WHERE f.fromUserId=?;";
+        String Query = "SELECT u.userId,u.name,u.username,u.profileUrl,(select true FROM Follow where fromUserId=? AND toUserId=u.userId) followState," +
+                "(?=u.userId) equalUserState FROM User u INNER JOIN Follow f ON u.userId=toUserId WHERE f.fromUserId=?;";
 
         Object[] Params = new Object[]{loginUserId,loginUserId,pageUserId};
         return this.jdbcTemplate.query(Query,
@@ -32,8 +33,6 @@ public class FollowDao {
                         rs.getInt("followState"),
                         rs.getInt("equalUserState")),
                 Params);
-
-
     }
 
 }

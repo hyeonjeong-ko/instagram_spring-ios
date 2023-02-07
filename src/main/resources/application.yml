@@ -1,5 +1,5 @@
 server:
-  port: 9000
+  port: 80 # 9000
 
 spring:
   servlet: # 파일 용량 제한 설정

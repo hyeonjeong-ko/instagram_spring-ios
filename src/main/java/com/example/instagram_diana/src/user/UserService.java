@@ -308,4 +308,19 @@ public class UserService {
 
         return dto;
     }
+
+    @Transactional
+    public void modifyUserEmail(long userId, String email) {
+        User user = userRepository.findById(userId).get();
+
+        user.setEmail(email);
+        userRepository.save(user);
+    }
+
+    public void modifyUserPhone(long userId, String phone) {
+        User user = userRepository.findById(userId).get();
+
+        user.setPhone(phone);
+        userRepository.save(user);
+    }
 }
