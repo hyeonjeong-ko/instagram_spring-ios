@@ -2,7 +2,6 @@ package com.example.instagram_diana.src.user;
 
 import com.example.instagram_diana.config.BaseException;
 import com.example.instagram_diana.src.dto.DayDto;
-import com.example.instagram_diana.src.dto.ProfileImageUploadDto;
 import com.example.instagram_diana.src.dto.userFollowingPostDto;
 import com.example.instagram_diana.src.model.Post;
 import com.example.instagram_diana.src.model.PostMedia;
@@ -23,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -291,22 +289,24 @@ public class UserService {
     }
 
     @Transactional
-    public ProfileImageUploadDto profileUpload(long loginUserId,MultipartFile imgFile) throws IOException {
+    public String profileUpload(long loginUserId, String profileImgUrl) throws IOException {
         User user = findUserById(loginUserId);
 
-        ProfileImageUploadDto dto = new ProfileImageUploadDto();
+//        ProfileImageUploadDto dto = new ProfileImageUploadDto();
+//
+//        // s3에 파일 저장
+//        String profileImgUrl = s3Service.uploadFile(imgFile);
+//        dto.setProfileImageUrl(profileImgUrl);
+//
+//        // 프로필정보 업데이트
+//        user.setProfileUrl(profileImgUrl);
 
-        // s3에 파일 저장
-        String profileImgUrl = s3Service.uploadFile(imgFile);
-        dto.setProfileImageUrl(profileImgUrl);
-
-        // 프로필정보 업데이트
         user.setProfileUrl(profileImgUrl);
 
         // table에 저장
         userRepository.save(user);
 
-        return dto;
+        return user.getProfileUrl();
     }
 
     @Transactional

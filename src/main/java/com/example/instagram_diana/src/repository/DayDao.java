@@ -20,7 +20,7 @@ public class DayDao {
     }
 
     public DayDto monthOfDay(long postId){
-        String Query = "SELECT MONTH(updatedAt) as month,week(createdAt) as day FROM Post WHERE postId=?;";
+        String Query = "SELECT MONTH(updatedAt) as month,week(updatedAt) as day FROM Post WHERE postId=?;";
         return this.jdbcTemplate.queryForObject(Query,
                 (rs, rowNum) -> new DayDto(
                         rs.getInt("month"),

@@ -307,28 +307,30 @@ public class UserController {
 
 
 
-//    //유저 프로필 url 등록
-//    @PostMapping ("/{pageUserId}/profile-image")
-//    public BaseResponse<ProfileImageUploadDto> profileImageUpload(@PathVariable("pageUserId") long pageUserId,
-//                                                                  @RequestParam("profileImageFile") MultipartFile imgFile){
-//        try{
-//            // jwt에서 idx 추출.
-//            long loginUserId = jwtService.getUserIdx();
-//
-//            if(pageUserId!=loginUserId){
-//                return new BaseResponse<>(USER_ID_NOT_EXIST);
-//            }
-//
-//            ProfileImageUploadDto dto= userService.profileUpload(loginUserId,imgFile);
-//
-//            return new BaseResponse<>("프로필 이미지 업로드 성공",dto);
-//
-//        } catch (BaseException exception) {
-//            return new BaseResponse<>((exception.getStatus()));
-//        }  catch (BaseException exception) {
-//            return new BaseResponse<>((exception.getStatus()));
-//        }
-//    }
+    //유저 프로필 url 등록
+    //@RequestParam("profileImageFile") MultipartFile imgFile
+    @PostMapping ("/{pageUserId}/profile")
+    public BaseResponse<?> profileImageUpload(@PathVariable("pageUserId") long pageUserId,
+                                                                  @RequestBody HashMap<Object,String> hash){
+        try{
+            // jwt에서 idx 추출.
+            long loginUserId = jwtService.getUserIdx();
+
+            if(pageUserId!=loginUserId){
+                return new BaseResponse<>(USER_ID_NOT_EXIST);
+            }
+
+            String resUrl= userService.profileUpload(loginUserId,hash.get("profileImgUrl"));
+
+            return new BaseResponse<>(resUrl);
+
+        }catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 
     // 유효성 검사 함수

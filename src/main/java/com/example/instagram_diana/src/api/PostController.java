@@ -2,6 +2,7 @@ package com.example.instagram_diana.src.api;
 
 import com.example.instagram_diana.config.BaseException;
 import com.example.instagram_diana.config.BaseResponse;
+import com.example.instagram_diana.src.dto.DayDto;
 import com.example.instagram_diana.src.dto.PostUploadDto;
 import com.example.instagram_diana.src.model.Post;
 import com.example.instagram_diana.src.model.PostMedia;
@@ -26,7 +27,7 @@ import java.util.List;
 import static com.example.instagram_diana.config.BaseResponseStatus.*;
 
 @RestController
-@RequestMapping("/app/users")
+@RequestMapping("/app")
 public class PostController {
 
     private final UserService userService;
@@ -161,6 +162,19 @@ public class PostController {
 
     }
 
+    @GetMapping("/posts/{postId}/day")
+    public BaseResponse<DayDto> updateDay(@PathVariable("postId") long postId){
+        // 주소의 포스트번호가 없으면 에러
+        if (!postService.checkPostExist(postId)){
+            return new BaseResponse<>(POST_ID_NOT_EXISTS);
+        }
+
+        DayDto day = postService.updateDay(postId);
+        return new BaseResponse<>(day);
+
+
+    }
+
     // 포스트 삭제
     @DeleteMapping ("/posts/{postId}")
     public BaseResponse<?> deletePost(@PathVariable("postId") long postId){
@@ -181,6 +195,7 @@ public class PostController {
         }
 
     }
+
 
 }
 

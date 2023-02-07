@@ -3,10 +3,12 @@ package com.example.instagram_diana.src.service;
 
 import com.example.instagram_diana.config.BaseException;
 import com.example.instagram_diana.config.BaseResponse;
+import com.example.instagram_diana.src.dto.DayDto;
 import com.example.instagram_diana.src.dto.PostUploadDto;
 import com.example.instagram_diana.src.model.Post;
 import com.example.instagram_diana.src.model.PostMedia;
 import com.example.instagram_diana.src.model.User;
+import com.example.instagram_diana.src.repository.DayDao;
 import com.example.instagram_diana.src.repository.PostMediaRepository;
 import com.example.instagram_diana.src.repository.PostRepository;
 import com.example.instagram_diana.src.user.UserService;
@@ -28,6 +30,8 @@ public class PostService {
     private final PostRepository postRepository;
     private final PostMediaRepository postMediaRepository;
     private final UserService userService;
+
+    private final DayDao dayDao;
 
     @Transactional
     public void postUpload(PostUploadDto postUploadDto, Long loginId) {
@@ -87,6 +91,14 @@ public class PostService {
     }
 
     @Transactional
+    public DayDto updateDay(long postId) {
+        // dayDao 가져와담기
+        DayDto dayInfo = dayDao.monthOfDay(postId);
+        return dayInfo;
+
+    }
+
+    @Transactional
     public void deletePost(long postId,long loginUserId) throws BaseException {
 
         Post post = postRepository.findById(postId).get();
@@ -99,4 +111,6 @@ public class PostService {
 
         postRepository.deleteById(postId);
     }
+
+
 }
