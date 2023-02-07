@@ -44,4 +44,7 @@ public class FollowService {
         return followRepository.checkFollow(fromUserId,toUserId);
     }
 
+    public List<FollowUserDto> followerList(long loginUserId, long pageUserId) {
+        return followDao.followerList(loginUserId,pageUserId);
+    }
 }

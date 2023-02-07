@@ -245,6 +245,22 @@ public class UserController {
         }
     }
 
+    @GetMapping ("/{userId}/follower-list")
+    public BaseResponse<List<FollowUserDto>> FollowerList(@PathVariable("userId") long pageUserId){
+        try{
+            // jwt에서 idx 추출.
+            long loginUserId = jwtService.getUserIdx();
+
+            List<FollowUserDto> followUserDtos = followService.followerList(loginUserId, pageUserId);
+
+            return new BaseResponse<>("구독리스트 조회 성공",followUserDtos);
+
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+
 
     // 이메일 수정
     @PatchMapping("/{userId}/email")

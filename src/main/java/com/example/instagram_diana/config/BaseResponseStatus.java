@@ -69,6 +69,12 @@ public enum BaseResponseStatus {
     PATCH_USERS_INVALID_EMAIL(false,2035,"이메일 형식을 확인해주세요."),
     PATCH_USERS_INVALID_PHONE(false,2036,"전화번호 형식을 확인해주세요."),
 
+    // [POST] /app/block/{userId}
+    POST_CANNOT_SELF(false,2037,"자신에게 요청할 수 없습니다."),
+    // [POST] /app/unblock/{userId}
+    USER_ID_ALREADY_BLOCK(false,2038,"이미 차단한 유저입니다."),
+    USER_ID_ALREADY_UNBLOCK(false,2039,"차단하지않은 유저입니다."),
+
 
 
     /**
@@ -80,6 +86,10 @@ public enum BaseResponseStatus {
     // [POST] /users
     DUPLICATED_EMAIL(false, 3013, "중복된 이메일입니다."),
     FAILED_TO_LOGIN(false,3014,"없는 아이디거나 비밀번호가 틀렸습니다."),
+
+    // [POST] /app/post
+    FILE_CANNOT_NULL(false,3015,"파일을 첨부해주세요."),
+
 
 
     /**

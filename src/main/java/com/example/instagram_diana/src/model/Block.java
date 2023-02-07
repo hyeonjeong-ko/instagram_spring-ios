@@ -1,16 +1,10 @@
 package com.example.instagram_diana.src.model;
 
-import lombok.Data;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.Instant;
-import java.time.LocalDateTime;
 
-@Data
 @Entity
 public class Block {
     @Id
@@ -20,25 +14,73 @@ public class Block {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "fromBlockId", nullable = false)
-    private User fromBlock;
+    @JoinColumn(name = "fromUserId", nullable = false)
+    private User fromUser;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "toBlockId", nullable = false)
-    private User toBlock;
+    @JoinColumn(name = "toUserId", nullable = false)
+    private User toUser;
 
-    @CreatedDate
+    @NotNull
     @Column(name = "createdAt", nullable = false)
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
-    @LastModifiedDate
-    @Column(name = "updatedAt",nullable = false)
-    private LocalDateTime updatedAt;
+    @NotNull
+    @Column(name = "updatedAt", nullable = false)
+    private Instant updatedAt;
+
     @Size(max = 225)
     @NotNull
     @Column(name = "status", nullable = false, length = 225)
     private String status;
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public User getFromUser() {
+        return fromUser;
+    }
+
+    public void setFromUser(User fromUser) {
+        this.fromUser = fromUser;
+    }
+
+    public User getToUser() {
+        return toUser;
+    }
+
+    public void setToUser(User toUser) {
+        this.toUser = toUser;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Instant getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
 }

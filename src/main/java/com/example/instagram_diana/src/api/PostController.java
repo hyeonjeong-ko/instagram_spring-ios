@@ -2,8 +2,7 @@ package com.example.instagram_diana.src.api;
 
 import com.example.instagram_diana.config.BaseException;
 import com.example.instagram_diana.config.BaseResponse;
-import com.example.instagram_diana.src.dto.DayDto;
-import com.example.instagram_diana.src.dto.PostUploadDto;
+import com.example.instagram_diana.src.dto.*;
 import com.example.instagram_diana.src.model.Post;
 import com.example.instagram_diana.src.model.PostMedia;
 import com.example.instagram_diana.src.service.LikeService;
@@ -43,6 +42,39 @@ public class PostController {
         this.s3Service = s3Service;
         this.jwtService = jwtService;
         this.likeService = likeService;
+    }
+
+    // 좋아요 순 피드
+    @GetMapping("/posts/popular")
+    public BaseResponse<?> popularFeed(){
+
+        List<PopularDto> popularDtoList = likeService.popularFeed();
+
+
+        return new BaseResponse<>(popularDtoList);
+
+    }
+
+    // 포스트 단일 업로드
+    @PostMapping("/post")
+    public BaseResponse<?> feedUpload(@RequestBody FeedUploadDto feedUploadDto){
+
+        if(feedUploadDto.getImgUrl()==null){
+            return new BaseResponse(FILE_CANNOT_NULL);
+        }
+
+        try{
+            // jwt에서 idx 추출.
+            long loginUserId = jwtService.getUserIdx();
+
+            postService.feedUpload(loginUserId,feedUploadDto);
+
+            return new BaseResponse<>("피드 업로드 요청 성공");
+
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+
     }
 
 

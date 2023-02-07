@@ -1,6 +1,7 @@
 package com.example.instagram_diana.src.service;
 
 
+import com.example.instagram_diana.src.dto.PopularDto;
 import com.example.instagram_diana.src.dto.likeStateDto;
 import com.example.instagram_diana.src.repository.LikeRepository;
 import com.example.instagram_diana.src.repository.likeDao;
@@ -8,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 
 @RequiredArgsConstructor
@@ -34,4 +37,8 @@ public class LikeService {
     }
 
 
+    @Transactional
+    public List<PopularDto> popularFeed() {
+        return likeStateDao.popularFeed();
+    }
 }

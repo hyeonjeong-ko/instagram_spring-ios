@@ -108,6 +108,13 @@ public class Post {
     public void setStatus(String status) {
         this.status = status;
     }
+
+
+    @PrePersist // DB에 insert되기 직전에 실행됨
+    public void createdAt(){
+        this.createdAt = LocalDateTime.now();
+    }
+
 }
 
 // post가 삭제되면 postMedia도 모두 삭제되어야 함...!

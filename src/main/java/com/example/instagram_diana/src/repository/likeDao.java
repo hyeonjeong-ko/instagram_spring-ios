@@ -1,11 +1,13 @@
 package com.example.instagram_diana.src.repository;
 
+import com.example.instagram_diana.src.dto.PopularDto;
 import com.example.instagram_diana.src.dto.likeStateDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.util.List;
 
 @Repository
 public class likeDao {
@@ -33,4 +35,12 @@ public class likeDao {
 
     }
 
+    public List<PopularDto> popularFeed() {
+        String Query ="select p.postId,m.mediaUrl FROM Post p INNER JOIN (SELECT postId,COUNT(postId) likeCount FROM postLike GROUP BY postId) c" +
+                " on p.postId=c.postId LEFT JOIN postMedia m on p.postId=m.postId ORDER BY likeCount DESC;";
+        return this.jdbcTemplate.query(Query,
+                (rs, rowNum) -> new PopularDto(
+                        rs.getLong("postId"),
+                        rs.getString("mediaUrl")));
+    }
 }

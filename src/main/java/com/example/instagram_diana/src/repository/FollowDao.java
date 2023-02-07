@@ -35,4 +35,20 @@ public class FollowDao {
                 Params);
     }
 
+    public List<FollowUserDto> followerList(long loginUserId, long pageUserId){
+        String Query = "SELECT u.userId,u.name,u.username,u.profileUrl,(select true FROM Follow where toUserId=? AND fromUserId=u.userId) followState," +
+                "(?=u.userId) equalUserState FROM User u INNER JOIN Follow f ON u.userId=fromUserId WHERE f.toUserId=?;";
+
+        Object[] Params = new Object[]{pageUserId,loginUserId,pageUserId};
+        return this.jdbcTemplate.query(Query,
+                (rs, rowNum) -> new FollowUserDto(
+                        rs.getLong("userId"),
+                        rs.getString("name"),
+                        rs.getString("userName"),
+                        rs.getString("profileUrl"),
+                        rs.getInt("followState"),
+                        rs.getInt("equalUserState")),
+                Params);
+    }
+
 }

@@ -4,6 +4,7 @@ package com.example.instagram_diana.src.service;
 import com.example.instagram_diana.config.BaseException;
 import com.example.instagram_diana.config.BaseResponse;
 import com.example.instagram_diana.src.dto.DayDto;
+import com.example.instagram_diana.src.dto.FeedUploadDto;
 import com.example.instagram_diana.src.dto.PostUploadDto;
 import com.example.instagram_diana.src.model.Post;
 import com.example.instagram_diana.src.model.PostMedia;
@@ -112,5 +113,29 @@ public class PostService {
         postRepository.deleteById(postId);
     }
 
+    @Transactional
+    public void feedUpload(long loginUserId, FeedUploadDto feedUploadDto) {
+        // post DB저장
+        Post post = new Post();
+        User user = userService.findUserById(loginUserId);
 
+        post.setUser(user);
+        post.setContent(feedUploadDto.getContent());
+        post.setStatus("ACTIVE");
+        post.setCreatedAt(LocalDateTime.now());
+        post.setUpdatedAt(LocalDateTime.now());
+
+        postRepository.save(post);
+
+        // postMedia 모두 별도 DB저장
+        PostMedia postMedia = new PostMedia();
+        postMedia.setPost(post);
+        // 미디어타입필터링(구현예정)
+        postMedia.setMediaType("PHOTO");
+        postMedia.setMediaUrl(feedUploadDto.getImgUrl());
+        postMedia.setStatus("ACTIVE");
+        postMedia.setCreatedAt(LocalDateTime.now());
+        postMedia.setUpdatedAt(LocalDateTime.now());
+        postMediaRepository.save(postMedia);
+    }
 }
