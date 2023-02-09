@@ -195,7 +195,7 @@ public class UserController {
     }
 
     // 유저 프로필 정보 조회
-    @GetMapping("/profile/{pageUserId}")
+    @GetMapping("/profiles/{pageUserId}")
     public BaseResponse<UserProfileDto> userProfile(@PathVariable long pageUserId){
 
         try {
@@ -230,7 +230,7 @@ public class UserController {
         }
     }
 
-    @GetMapping ("/{userId}/following-list")
+    @GetMapping ("/{userId}/following-lists")
     public BaseResponse<List<FollowUserDto>> FollowingList(@PathVariable("userId") long pageUserId){
         try{
             // jwt에서 idx 추출.
@@ -245,7 +245,7 @@ public class UserController {
         }
     }
 
-    @GetMapping ("/{userId}/follower-list")
+    @GetMapping ("/{userId}/follower-lists")
     public BaseResponse<List<FollowUserDto>> FollowerList(@PathVariable("userId") long pageUserId){
         try{
             // jwt에서 idx 추출.
@@ -263,7 +263,7 @@ public class UserController {
 
 
     // 이메일 수정
-    @PatchMapping("/{userId}/email")
+    @PatchMapping("/{userId}/emails")
     public BaseResponse<?> changeEmail(@PathVariable("userId") long userId,@RequestBody HashMap<Object,String> hash){
         try{
             // 주소아이디 유효성 체크
@@ -293,7 +293,7 @@ public class UserController {
 
     }
 
-    @PatchMapping("/{userId}/phone")
+    @PatchMapping("/{userId}/phones")
     public BaseResponse<?> changePhoneNumber(@PathVariable("userId") long userId,@RequestBody HashMap<Object,String> hash){
         try{
             // 주소아이디 유효성 체크
@@ -325,7 +325,7 @@ public class UserController {
 
     //유저 프로필 url 등록
     //@RequestParam("profileImageFile") MultipartFile imgFile
-    @PostMapping ("/{pageUserId}/profile")
+    @PostMapping ("/{pageUserId}/profiles")
     public BaseResponse<?> profileImageUpload(@PathVariable("pageUserId") long pageUserId,
                                                                   @RequestBody HashMap<Object,String> hash){
         try{

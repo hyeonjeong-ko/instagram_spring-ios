@@ -68,7 +68,7 @@ public class User {
 
 
     @Builder
-    public User(String email,  String username, String name, String phone,String password,String provider) {
+    public User(String email,  String username, String name, String phone,String password,String provider,String profileUrl) {
         this.email = email;
         this.username = username;
         this.name = name;
@@ -79,6 +79,8 @@ public class User {
 
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
+
+        this.profileUrl = profileUrl;
     }
 
 

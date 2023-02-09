@@ -111,6 +111,7 @@ public class UserService {
                     .phone(postUserReq.getPhone())
                     .password(postUserReq.getPassword())
                     .provider("INSTAGRAM")
+                    .profileUrl("https://blog.kakaocdn.net/dn/c3vWTf/btqUuNfnDsf/VQMbJlQW4ywjeI8cUE91OK/img.jpg")
                     .build();
 
             // 회원가입 (DB저장)
@@ -234,7 +235,7 @@ public class UserService {
             dto.setFollower(followerCount);
 
             // 대표 이미지들
-            List<PostMedia> postMedias = postMediaRepository.userPageThumbnails();
+            List<PostMedia> postMedias = postMediaRepository.userPageThumbnails(pageUserId);
             //ThumbnailsUrls
             //List<String> ThumbnailsUrls = null;
             System.out.println(postMedias);

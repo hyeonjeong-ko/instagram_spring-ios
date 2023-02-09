@@ -28,7 +28,7 @@ public class FollowController {
         this.jwtService = jwtService;
     }
 
-    @PostMapping("/follow/postfollow/{toUserId}")
+    @PostMapping("/follows/users/{toUserId}")
     public BaseResponse<?> PostFollow(@PathVariable("toUserId") long toUserId) throws BaseException{
         try{
 
@@ -54,7 +54,7 @@ public class FollowController {
         }
     }
 
-    @PostMapping("/follow/postunfollow/{toUserId}")
+    @PostMapping("/unfollows/users/{toUserId}")
     public BaseResponse<?> PostUnFollow(@PathVariable("toUserId") long toUserId) throws BaseException{
         try{
             if (!userService.checkUserExist(toUserId)){
@@ -80,7 +80,7 @@ public class FollowController {
         }
     }
 
-    @PostMapping("/follow/{toUserId}")
+    @PostMapping("/follows/{toUserId}")
     public BaseResponse<?> FollowToggle(@PathVariable("toUserId") long toUserId) throws BaseException {
 
         if (!userService.checkUserExist(toUserId)){
@@ -115,7 +115,7 @@ public class FollowController {
         }
     }
 
-    @GetMapping("/follow-state/users/{userId}")
+    @GetMapping("/follow-states/users/{userId}")
     public BaseResponse<?> followState(@PathVariable("userId") long toUserId){
 
         if (!userService.checkUserExist(toUserId)){

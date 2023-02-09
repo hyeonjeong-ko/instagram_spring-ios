@@ -44,6 +44,26 @@ public class PostController {
         this.likeService = likeService;
     }
 
+    // 랜덤 피드 개별 게시물 조회
+    @GetMapping("/posts/popular/{postId}")
+    public BaseResponse<?> popularFeedDetail(@PathVariable("postId") Long postId){
+        try {
+
+            // 주소의 포스트번호가 없으면 에러
+            if (!postService.checkPostExist(postId)){
+                return new BaseResponse<>(POST_ID_NOT_EXISTS);
+            }
+
+            // jwt에서 idx 추출.
+            long loginUserId = jwtService.getUserIdx();
+            PopularDetailDto dtos = postService.popularFeedDtail(postId,loginUserId);
+            return new BaseResponse<>("포스트 정보 요청 성공",dtos);
+
+        }catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
     // 좋아요 순 피드
     @GetMapping("/posts/popular")
     public BaseResponse<?> popularFeed(){
@@ -77,10 +97,36 @@ public class PostController {
 
     }
 
+    // 날짜 정보
+    @GetMapping("/posts/{postId}/day-details")
+    public BaseResponse<?> postDayDetail(@PathVariable("postId") Long postId){
+        // 주소의 포스트번호가 없으면 에러
+        if (!postService.checkPostExist(postId)){
+            return new BaseResponse<>(POST_ID_NOT_EXISTS);
+        }
+
+        DayDetailDto dayDetail= postService.postDayDetail(postId);
+        return new BaseResponse<>(dayDetail);
+
+
+    }
+
+    @PostMapping("/posts")
+    public BaseResponse<?> postUpload(@RequestBody PostUploadDto postUploadDto){
+        try{
+            Long loginUserId = jwtService.getUserIdx();
+            postService.postUpload(postUploadDto,loginUserId);
+
+            return new BaseResponse<>("게시물 등록 요청 성공");
+        }catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
 
     //@PathVariable("userId") long PageUserId X. form을 주소단에서 받을 수 없음.
     //MultipartFile post-upload.
-    @PostMapping("/posts")
+    @PostMapping("/posts/multifiles")
     public BaseResponse<?> multiFilePostUpload(@RequestParam("userId") Long PageUserId,
                                       @RequestParam("content") String content,
                                       @RequestParam("multiFile") List<MultipartFile> multipartFiles) throws IOException {
@@ -129,7 +175,7 @@ public class PostController {
         }
     }
 
-    @PostMapping("/like/{postId}")
+    @PostMapping("/likes/{postId}")
     public BaseResponse<?> likes(@PathVariable long postId){
 
         try{
@@ -155,7 +201,7 @@ public class PostController {
         return new BaseResponse<>("좋아요 요청에 성공했습니다.");
     }
 
-    @PostMapping("/unlike/{postId}")
+    @PostMapping("/unlikes/{postId}")
     public BaseResponse<?> unlikes(@PathVariable long postId){
 
         try{
@@ -194,7 +240,7 @@ public class PostController {
 
     }
 
-    @GetMapping("/posts/{postId}/day")
+    @GetMapping("/posts/{postId}/days")
     public BaseResponse<DayDto> updateDay(@PathVariable("postId") long postId){
         // 주소의 포스트번호가 없으면 에러
         if (!postService.checkPostExist(postId)){
@@ -208,7 +254,7 @@ public class PostController {
     }
 
     // 포스트 삭제
-    @DeleteMapping ("/posts/{postId}")
+    @DeleteMapping ("/feeds/{postId}")
     public BaseResponse<?> deletePost(@PathVariable("postId") long postId){
 
         // 주소의 포스트번호가 없으면 에러

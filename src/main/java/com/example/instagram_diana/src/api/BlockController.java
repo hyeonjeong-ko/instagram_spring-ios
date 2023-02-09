@@ -24,7 +24,7 @@ public class BlockController {
         this.jwtService = jwtService;
     }
 
-    @PostMapping("/block/{toUserId}")
+    @PostMapping("/blocks/{toUserId}")
     public BaseResponse<?> block(@PathVariable("toUserId") long toUserId){
 
         try{
@@ -53,7 +53,7 @@ public class BlockController {
 
     }
 
-    @PostMapping("/unblock/{toUserId}")
+    @PostMapping("/unblocks/{toUserId}")
     public BaseResponse<?> unBlock(@PathVariable("toUserId") long toUserId){
 
         try{
@@ -82,7 +82,7 @@ public class BlockController {
 
     }
 
-    @GetMapping("block-state/{toUserId}")
+    @GetMapping("block-states/{toUserId}")
     public BaseResponse<?> blockState(@PathVariable("toUserId") long toUserId){
         int res=-1;
         if (userService.checkUserExist(toUserId)){

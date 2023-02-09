@@ -30,7 +30,7 @@ public class LikeController
         this.jwtService = jwtService;
     }
 
-    @GetMapping("/like-state/{postId}")
+    @GetMapping("/like-states/{postId}")
     public BaseResponse<?> likeState(@PathVariable("postId") long postId){
         try{
             // 주소의 포스트번호가 없으면 에러

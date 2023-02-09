@@ -91,13 +91,13 @@ public class SecurityConfig {
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()
-                .loginPage("/loginForm")
-                .loginProcessingUrl("/loginsecurity") //login 주소가 호출되면 Security가 낚아채 로그인 진행해준다.
+                //.loginPage("/loginForm")
+                .loginProcessingUrl("/login") //securitylogin 주소가 호출되면 Security가 낚아채 로그인 진행해준다.
                 .defaultSuccessUrl("/")
                 .and()
                 .oauth2Login()
                 .successHandler(successHandler)
-                .loginPage("/loginForm")
+                //.loginPage("/loginForm")
                 .userInfoEndpoint()
                 .userService(principalOauth2UserService);
         return http.build();

@@ -11,8 +11,8 @@ import java.util.List;
 public interface PostMediaRepository extends JpaRepository<PostMedia,Long> {
 
     @Modifying
-    @Query(value="SELECT * FROM postMedia WHERE postMediaId= any(SELECT MIN(postMediaId) FROM  Post join postMedia on Post.postId=postMedia.postId where userId=5 group by Post.postId);",nativeQuery = true)
-    List<PostMedia> userPageThumbnails();
+    @Query(value="SELECT * FROM postMedia WHERE postMediaId= any(SELECT MIN(postMediaId) FROM  Post join postMedia on Post.postId=postMedia.postId where userId=:PageUserId group by Post.postId);",nativeQuery = true)
+    List<PostMedia> userPageThumbnails(long PageUserId);
 
 //    @Modifying
 //    @Query(value="SELECT * FROM postMedia WHERE postId=2;",nativeQuery = true)

@@ -1,11 +1,7 @@
 package com.example.instagram_diana.src.dto;
 
-
-import com.example.instagram_diana.src.model.PostMedia;
-import com.example.instagram_diana.src.repository.DayDao;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -13,17 +9,17 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class userFollowingPostDto {
+public class PopularDetailDto {
     private Long postId;
     private String userName;
     private String content;
     private List<String> imgUrls;
     private long likeCount;
-    private long commentCount;
+   // private long commentCount;
 
     // 추가된 부분들
     private long postUserId;
     private int likeState;
     private String userProfileUrl;
-    private DayDto dayInfo;
+    private DayDetailDto dayDetailDto;
 }

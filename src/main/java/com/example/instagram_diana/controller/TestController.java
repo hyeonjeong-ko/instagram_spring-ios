@@ -35,6 +35,18 @@ public class TestController {
 
     }
 
+    @GetMapping("/oauth2")
+    public @ResponseBody String testget1(){
+        return "oauth2";
+
+    }
+
+    @GetMapping("login/oauth2/code/facebook")
+    public @ResponseBody String testget2(){
+        return "login/oauth2...";
+
+    }
+
 
 
 }
