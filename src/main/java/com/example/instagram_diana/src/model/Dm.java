@@ -1,5 +1,6 @@
 package com.example.instagram_diana.src.model;
 
+import lombok.Builder;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -46,5 +47,15 @@ public class Dm {
     @Column(name = "status", nullable = false, length = 20)
     private String status;
 
+    @Builder
+    public Dm(User fromUser,  User toUser, String content) {
+        this.fromUser = fromUser;
+        this.toUser = toUser;
+        this.contentType = "TEXT";
+        this.content = content;
+        this.status = "ACTIVE";
 
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+    }
 }

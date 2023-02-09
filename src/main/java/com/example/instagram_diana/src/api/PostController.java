@@ -3,19 +3,13 @@ package com.example.instagram_diana.src.api;
 import com.example.instagram_diana.config.BaseException;
 import com.example.instagram_diana.config.BaseResponse;
 import com.example.instagram_diana.src.dto.*;
-import com.example.instagram_diana.src.model.Post;
-import com.example.instagram_diana.src.model.PostMedia;
+import com.example.instagram_diana.src.service.CommentService;
 import com.example.instagram_diana.src.service.LikeService;
 import com.example.instagram_diana.src.service.PostService;
-import com.example.instagram_diana.src.testS3.FileDto;
-import com.example.instagram_diana.src.testS3.FileService;
 import com.example.instagram_diana.src.testS3.S3Service;
 import com.example.instagram_diana.src.user.UserService;
 import com.example.instagram_diana.src.utils.JwtService;
-import io.jsonwebtoken.Jwt;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,13 +29,30 @@ public class PostController {
     private final JwtService jwtService;
     private final LikeService likeService;
 
+    private final CommentService commentService;
+
     @Autowired
-    public PostController(UserService userService, PostService postService, S3Service s3Service, JwtService jwtService, LikeService likeService) {
+    public PostController(UserService userService, PostService postService, S3Service s3Service, JwtService jwtService, LikeService likeService, CommentService commentService) {
         this.userService = userService;
         this.postService = postService;
         this.s3Service = s3Service;
         this.jwtService = jwtService;
         this.likeService = likeService;
+        this.commentService = commentService;
+    }
+
+    // 댓글 개수 조회
+    @GetMapping("/posts/{postId}/all-comments")
+    public BaseResponse<?> commentNum(@PathVariable("postId") Long postId){
+
+        // 주소의 포스트번호가 없으면 에러
+        if (!postService.checkPostExist(postId)){
+            return new BaseResponse<>(POST_ID_NOT_EXISTS);
+        }
+
+        int count = commentService.commentNum(postId);
+        return new BaseResponse<>("포스트 댓글 개수 요청 성공",count);
+
     }
 
     // 랜덤 피드 개별 게시물 조회
@@ -76,7 +87,7 @@ public class PostController {
     }
 
     // 포스트 단일 업로드
-    @PostMapping("/post")
+    @PostMapping("/feeds")
     public BaseResponse<?> feedUpload(@RequestBody FeedUploadDto feedUploadDto){
 
         if(feedUploadDto.getImgUrl()==null){
@@ -254,7 +265,7 @@ public class PostController {
     }
 
     // 포스트 삭제
-    @DeleteMapping ("/feeds/{postId}")
+    @DeleteMapping ("/posts/{postId}")
     public BaseResponse<?> deletePost(@PathVariable("postId") long postId){
 
         // 주소의 포스트번호가 없으면 에러

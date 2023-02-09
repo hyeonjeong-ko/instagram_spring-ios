@@ -347,6 +347,23 @@ public class UserController {
         }
     }
 
+    // 추천친구(언팔로우한사람들중 랜덤추천)
+    @GetMapping("/recommend-lists")
+//    public BaseResponse<?> recommendLists(){
+//        try {
+//            // jwt에서 idx 추출.
+//            long loginUserId = jwtService.getUserIdx();
+//            List<FollowUserDto> dto = FollowService.recommendLists();
+//            return new BaseResponse<>(dto);
+//
+//
+//        }catch (BaseException exception) {
+//            return new BaseResponse<>((exception.getStatus()));
+//        }
+//
+//    }
+
+
 
 
     // 유효성 검사 함수

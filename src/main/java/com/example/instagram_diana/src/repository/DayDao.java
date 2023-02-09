@@ -48,4 +48,7 @@ public class DayDao {
                         rs.getString("dayPoint")),
                 postId);
     }
+
+
+    // dm 날짜 조회
 }
