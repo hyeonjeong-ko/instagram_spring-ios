@@ -1,0 +1,240 @@
+# 쩡이 개발일지
+___
+## 2023-01-28
+
++ 팀 계획서 작성
+	+ [계획서 바로가기](https://www.notion.so/softsquared/A-iOS-6648f3ead7aa4ea0b07c3e792ffe4a65)
+	+ 개발 기능 범위 설정
+	+ 주차 목표 작성
+	+ 서버 역할 분담
++ 서버 구축
+	+ EC2 서버 구축
+	+ NginX 설치 완료
+	+ mySQL 설치 완료
+	+ php 설치 완료
+	+ phpmyadmin설치 완료
++ Instagram API 기본 명세 작성 [바로가기](https://docs.google.com/spreadsheets/d/1UxmF8Kh5oQa_UejQxl2WeycWs-lclE10d-Fw0Vt4P9Q/edit#gid=0)
+
+---
+### ERD 설계(AQueryTool.com)
+<img style="margin:10px" width="970" alt="erd설계사진" src="https://user-images.githubusercontent.com/72601276/215269988-8a61a7e7-24a6-4f60-99de-2aaf77ab5e9d.png">  
+
+  
+1. [DB설계 바로가기](https://aquerytool.com/aquerymain/index/?rurl=a861bb5c-e3cb-4ab5-b04d-6bd697d2028c)  
+2. password : 732eir
+
+---  
+
+## 2023-01-29  
+
++ 도메인,서브도메인 설정
++ SSL 인증 완료
++ RDS 구축 및 DB 연동 완료
++ API 명세서 목록 작성
+---  
+
+## 2023-01-30  
+
++ 스프링 템플릿 기본 환경 설정
++ DB to JPA Entity 맵핑 완료
++ 서버 & 스프링 프로젝트 연동 시도 (미완료)
++ 일반 로그인 , 회원가입 구현 완료
+
+
+---  
+
+## 2023-01-31 
+<div display="flex">
+<img width="198" alt="패키지구조" src="https://user-images.githubusercontent.com/72601276/215790804-f78e5f4b-5ceb-4172-aa6f-b82e37a0099c.png" style="margin:10px">
+<img width="400" alt="11-3" src="https://user-images.githubusercontent.com/72601276/215789727-cf10a50d-789a-4cae-892d-07d1f9cb1098.png" style="margin:10px">
+<img width="500" alt="11-1" src="https://user-images.githubusercontent.com/72601276/215789456-f59050ae-3a5a-4e2f-9f53-d6108321f9b7.png" style="margin:10px"></br>
+<img width="500" alt="11-2" src="https://user-images.githubusercontent.com/72601276/215789653-e03d085e-4950-44fd-8049-8150430666a2.png" style="margin:10px">
+<img width="444" alt="로그인토큰인증" src="https://user-images.githubusercontent.com/72601276/216763869-80db3380-d879-47c9-a922-633a71009481.png">
+
+</div>
+	
++ 서버 & 스프링 프로젝트 연동
++ Spring Security 셋팅
++ Oauth2 페이스북 로그인 구현
++ Oauth2,일반 로그인 JWT Authentication 구현 (UserDetails)
+
+---  
+
+## 2023-02-01  
+
++ 발표 시연 영상 제작 [영상보기](https://drive.google.com/file/d/1vmzZ_ls9buP0kMKJ1WhWikeP885_kie2/view?usp=sharing)  
++ 멘토링 및 ERD 피드백
++ 서버 & 스프링 프로젝트 연동 오류 발생  
+
+---  
+
+## 2023-02-02  
+
++ 위클리 스크럼 오전회의 진행상황 보고
++ 서버 멤버 올리브와 오후 회의
++ 서버 & 스프링 프로젝트 연동 및 배포(오류 해결 완료) 
++ 서버 rest api testcode 작성
++ Exception Handler code 작성
++ 멘토님 피드백 & 회의 바탕으로 ERD 수정  
+
+
+---  
+
+## 2023-02-03
+<img width="400" alt="11-3" src="https://user-images.githubusercontent.com/72601276/215789727-cf10a50d-789a-4cae-892d-07d1f9cb1098.png" style="margin:10px">
+<img width="311" alt="구독취소" src="https://user-images.githubusercontent.com/72601276/216763802-2615d479-2ccb-4aa2-8687-eba4b7c4c183.png">
+<div display="flex">
+	<img width="190" alt="구독jwt입력1" src="https://user-images.githubusercontent.com/72601276/216763807-338283e7-1818-490a-b8d2-935bc6719de3.png">
+	<img width="211" alt="구독jwt입력2" src="https://user-images.githubusercontent.com/72601276/216763808-a7cdcee9-eb25-4eef-8930-fc69a6917061.png">
+	<img width="284" alt="권한없음" src="https://user-images.githubusercontent.com/72601276/216763818-54a219fc-d7be-4544-a2ee-bdc03d9e6feb.png">
+</div>
+	
++ 클라이언트와 진행상황 회의 및 코드 통일규칙 정함
++ 회원수정 api 구현 
++ 팔로우 api 구현
++ 로그인 기능 수정 및 유효성 처리
+
+---  
+
+## 2023-02-04
+
+<img width="636" alt="포스트업로드성공2" src="https://user-images.githubusercontent.com/72601276/216763350-137c87ce-8bbd-49f6-8157-2eba5cfeec9a.png">
+<img width="511" alt="포스트업로드성공3" src="https://user-images.githubusercontent.com/72601276/216763400-cc083f56-a43a-45fd-8915-f136b776612d.png">  
+	
+<div display="flex" justify-content="space-between" vertical-align="center">
+<img width="200" src="https://user-images.githubusercontent.com/72601276/217989346-7eaa88d7-9723-43fb-bfc1-882f0ae0f761.jpg"/>
+<img width="353" alt="이미지 썸네" src="https://user-images.githubusercontent.com/72601276/217988807-83249f7f-104a-4180-8ba3-10f860e02bfb.png">	
+	</div>	
+	
++ api 기능 구현
+	+ 유저 프로필 정보(팔로워,팔로잉,게시글갯수등) api 구현
+	+ 더미데이터 쌓아 기능 테스트 
+	+ 피드 업로드 api 구현    
+	+ 멀티이미지 업로드 api 구현  
+	+ 클라이언트 요청에따라 팔로우 토글 기능 분리 구현
+
++ 모델 수정 & 이미지 서버 구축  
+	+ ERD 컬럼명 및 Null값 규정 수정
+	+ 회의 수정 사항 DB서버 반영 및 JPA Entity 수정  
+	+ 피드 업로드 api 구현    
+	+ <img width="400" alt="프로필" src="https://user-images.githubusercontent.com/72601276/216826634-1f1c1334-3297-418f-888a-8331fede3054.png">  
+	+ <img width="500" alt="인스타서버저장히힛" src="https://user-images.githubusercontent.com/72601276/216763403-28af28b3-b424-4f3d-9b01-3510b08031db.png">  
+	
+	+ AWS S3 이미지 서버 구축 및 연동
+---  
+
+## 2023-02-05
+
+<div display="flex" justify-content="space-between">
+<img src="https://user-images.githubusercontent.com/72601276/216826421-ce2f519b-3102-4b30-abd7-91bc7368cec0.jpg" width="250px"/>  
+<img width="500px" alt="팔로잉유저게시물들" src="https://user-images.githubusercontent.com/72601276/216826565-cc385ff4-0330-4869-a684-628eff85fab7.png">     
+	
+</div>  
+	
++ api 기능 구현  
+	+ 유저가 팔로우한 유저 게시물 피드 페이지 api구현 (홈 메인화면)
+	+ 무한참조 에러 해결
+	+ 좋아요 / 좋아요 취소 api구현  	
++ 업데이트 내역 서버 2차 배포
+
+
+---  
+
+## 2023-02-06
+<div display="flex" justify-content="space-between">
+	<img width="300" src="https://user-images.githubusercontent.com/72601276/217914661-046938bf-2ec9-4bc3-a1e7-f800d5b0d0fb.jpg"/>
+	<img width="300" alt="팔로잉리스트으으으" src="https://user-images.githubusercontent.com/72601276/217007252-8b81b074-fcf7-4367-b631-cbc410f95e01.png">  
+</div>
+	
++ 유저 페이지 팔로잉 리스트 api 구현
+	+ followState: 로그인한 유저가 리스트의 유저(조회하는 페이지유저의 팔로우 유저)를 팔로우했는지 (팔로잉/팔로우 상태 표시 위함)
+	+ equalUserState: 로그인한 유저가 페이지 유저의 팔로우 유저인지 (자기 자신은 조회목록에 뜨지않도록 함)
+	+ 쿼리 구현 예시  
+	+ <img width="901" alt="쿼리예시2" src="https://user-images.githubusercontent.com/72601276/217007552-45ebe42b-13b5-410e-b33f-e87e46c02dcd.png">  
+
+		
+
++ 유저 프로필 업로드 api 구현
++ 게시물 댓글 api 구현
++ 회의 및 api 연동 테스트 & 쿼리 재점검
+	+ 쿼리 구현 예시
+	+ <img width="700" alt="쿼리예시사진" src="https://user-images.githubusercontent.com/72601276/217009116-80312db7-10ea-42a9-8e94-bb8d56a5fbc7.png"> 
++ 유저 수정페이지 valid 검사 오류 수정 완료
++ 메인페이지 추가 요구사항 api 수정 완료 
+	+ 날짜정보,프로필Url,작성자,게시물유저에 대한 로그인유저의 좋아요 상태 추가 반영
+	+ <img width="400" alt="유저메인피드수정후" src="https://user-images.githubusercontent.com/72601276/217010083-38cc77ac-3f16-41e2-b703-8d2099653df4.png">
+
++ 서버 3차 업데이트 배포  
+---  
+
+## 2023-02-07  
+
++ SSL 인증 및 프록시 설정완료
++ 심볼릭 링크 에러 해결
++ 클라이언트 미팅 (파일업로드는 파이어베이스 사용하기로함)
++ 개별 기능 api 기능들 구현
++ 팔로잉 api 구현
+	+ 쿼리 구현 예시
+	+ <img width="904" alt="팔로워쿼리" src="https://user-images.githubusercontent.com/72601276/217360736-32fb1e51-d0da-4206-a8c3-e500b532c46c.png">
+	+ <img width="300" alt="팔로워" src="https://user-images.githubusercontent.com/72601276/217360876-fcc2f4f6-c1c3-47f9-b196-fd07b5f24003.png">
+
+
++ 피드 개별이미지(클라이언트 요청) 구현완료
+
+---  
+
+## 2023-02-08  
+ <img width="200" src="https://user-images.githubusercontent.com/72601276/217360344-5e73bd28-4067-4fff-ba2d-a94e8207336b.jpg">  
+ 	
+
++ 인기페이지(좋아요 순) 피드 api 구현
+	+ 쿼리 구현 예시
+	+ <img width="865" alt="조조아아아" src="https://user-images.githubusercontent.com/72601276/217360266-d0aabc74-b300-4b70-95aa-8a3645b936c8.png">
+	+ <img width="350" alt="조아요순" src="https://user-images.githubusercontent.com/72601276/217360512-ac28da09-b5bd-4107-9e01-38f4de37b1cd.png">
+	+ <img width="404" alt="조조조2" src="https://user-images.githubusercontent.com/72601276/217360836-352fa222-22ee-4d16-9aab-98669db44a36.png">
+
++ 차단 api 구현
++ restapi 규칙에 맞게 api 재수정
+
+
+---  
+
+## 2023-02-09  
+
++ 피드 날짜 상세 가져오기(몇분전,몇시간전,몇일전,작년...) api 구현
+	+ 쿼리 구현 예시
+	+ <img width="847" alt="날상세쿼리" src="https://user-images.githubusercontent.com/72601276/217911611-f3dd5fc6-b18e-41e6-9b82-68b80f472c22.png">  
+	+ <img width="579" alt="날짜파게티" src="https://user-images.githubusercontent.com/72601276/217911668-87b9eb10-c1d2-4571-a024-1d7d708de294.png">
+
+
++ 피드 이미지 리스트 업로드 api 구현
++ 쇼핑 화면 썸네일 모음 조회,등록 api 구현
++ 랜덤 피드 게시물 조회 api 구현
++ 포스트 댓글 개수 조회 api 구현
++ 서브 도메인 prod 재설정 완료
++ 더미 데이터 쌓기 작업 시작
+
+---  
+
+## 2023-02-10  
+
++ 디엠 전송,조회,삭제 api 구현
+	+ <img width="300" alt="메시지방ㅋㅋ" src="https://user-images.githubusercontent.com/72601276/217912400-ca5d1cd8-4dc2-4f05-ad76-ac9a2cbe6485.png">
+	+ 쿼리 구현 예시
+	+ <img width="400" alt="디디디컄" src="https://user-images.githubusercontent.com/72601276/217913779-a74097b5-f34f-43a9-bdfd-25a0c8062c84.png">
+
+
++ 포스트맨 collection 제작 완료
+	+ <img width="600" alt="포스트맨정리" src="https://user-images.githubusercontent.com/72601276/217913019-8ed2f76c-16fd-4e62-9ff4-821b1d2b2caa.png">
+
++ readme 작성
++ 유저 사용 시나리오 구성
++ 시연 영상 제작
+
+
+
+<div align="center">
+	<img src="https://img.shields.io/badge/Spring Boot-white?style=flat&logo=Spring Boot&logoColor=#6DB33F" />
+	<img src="https://img.shields.io/badge/Spring Security-E34F26?style=flat&logo=Spring Security&logoColor=#6DB33F" />
+	<img src="https://img.shields.io/badge/Spring-white?style=flat&logo=Spring&logoColor=#6DB33F" />
+</div>
